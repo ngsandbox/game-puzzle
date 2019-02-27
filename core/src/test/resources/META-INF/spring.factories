@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-org.game.puzzle.core.CommonConfiguration
+org.game.puzzle.core.CoreConfiguration

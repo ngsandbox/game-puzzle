@@ -58,12 +58,12 @@
         <appender-ref ref="FILE-AUDIT"/>
     </appender>
 
-    <logger name="org.game.puzzle" level="DEBUG">
+    <logger name="org.game.puzzle" level="DEBUG" additivity="false">
         <appender-ref ref="FILE-AUDIT-ASYNC"/>
         <appender-ref ref="STDOUT"/>
     </logger>
 
-    <root level="INFO">
+    <root level="INFO" additivity="false">
         <appender-ref ref="FILE-ERROR"/>
         <appender-ref ref="STDOUT"/>
     </root>
