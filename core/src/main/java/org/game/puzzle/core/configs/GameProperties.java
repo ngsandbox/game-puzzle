@@ -41,4 +41,9 @@ public class GameProperties {
      */
     private int minLuck = 8;
 
+    /**
+     * The amount of rows and columns of the fighting arena
+     */
+    private byte arenaSize = 8;
+
 }

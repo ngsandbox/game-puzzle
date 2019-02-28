@@ -11,6 +11,7 @@ public class Characteristic {
      * Unique identifier for species characteristic
      */
     private final String id;
+
     private final Gender gender;
 
     /**

@@ -1,6 +1,7 @@
 package org.game.puzzle.core;
 
 import lombok.extern.slf4j.Slf4j;
+import org.game.puzzle.core.configs.GameProperties;
 import org.game.puzzle.core.subscription.InMemorySubscriptionService;
 import org.game.puzzle.core.subscription.SubscriptionService;
 import org.game.puzzle.core.utils.Generator;
@@ -12,7 +13,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Slf4j
 @Configuration
-@EnableConfigurationProperties
+@EnableConfigurationProperties(GameProperties.class)
 @ComponentScan("org.game.puzzle.core")
 public class CoreConfiguration {
 
