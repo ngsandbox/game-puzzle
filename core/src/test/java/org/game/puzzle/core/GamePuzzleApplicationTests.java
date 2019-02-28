@@ -97,6 +97,7 @@ public class GamePuzzleApplicationTests {
     }
 
 
+    @SuppressWarnings("StatementWithEmptyBody")
     @Test
     void testGetLush() {
         Species maxLuckSpecies = new Human("id1", "species", testCharacterBuilder().level(99).luck(10).build(), null);

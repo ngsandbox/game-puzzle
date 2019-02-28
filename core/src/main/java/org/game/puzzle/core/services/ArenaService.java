@@ -3,24 +3,17 @@ package org.game.puzzle.core.services;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.game.puzzle.core.configs.GameProperties;
-import org.game.puzzle.core.entities.Armor;
-import org.game.puzzle.core.entities.Cell;
-import org.game.puzzle.core.entities.Range;
-import org.game.puzzle.core.entities.Species;
+import org.game.puzzle.core.entities.grid.Cell;
+import org.game.puzzle.core.entities.grid.Coordinate;
 import org.game.puzzle.core.subscription.SubscriptionService;
-import org.game.puzzle.core.subscription.events.MessageEvent;
 import org.game.puzzle.core.utils.Generator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 
-import java.math.BigDecimal;
-import java.util.ArrayDeque;
-import java.util.Deque;
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
-
-import static org.game.puzzle.core.entities.Cell.visited;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -40,48 +33,38 @@ public class ArenaService {
     }
 
 
-    public int breadthFirstSearch(@NonNull Cell[][] grid,
-                                  @NonNull Cell source,
-                                  @NonNull Cell destination) {
-        // To keep track of visited QItems. Marking
-        // blocked cells as visited.
+    /**
+     * Find path from the source to the destination coordinates
+     */
+    public List<Coordinate> findRoute(@NonNull Coordinate source,
+                                      @NonNull Coordinate destination) {
+        Cell sourceCell = Cell.newCell(source, new ArrayList<>());
+        Optional<Cell> route = getPath(sourceCell, destination);
+        log.debug("The result route {}", route);
+        return route.map(Cell::getRoute).orElse(new LinkedList<>());
+    }
 
-        int max = grid.length;
-        Deque<Cell> path = new ArrayDeque<>(max * max);
-        path.push(source);
-        while (!path.isEmpty()) {
-            Cell cell = path.poll();
+    private int nextPosition(int currAxis, int destAxis) {
+        return currAxis > destAxis ? currAxis - 1 :
+                currAxis < destAxis ? currAxis + 1 : destAxis;
+    }
 
-            // Destination found;
-            if (grid[cell.getRow()][cell.getCol()].equals(destination))
-                return cell.getDist();
-
-            // move to the up cell
-            if (isNotVisited((byte) (cell.getRow() - 1), cell.getCol(), grid)) {
-                path.push(grid[cell.getRow() - 1][cell.getCol()].visit());
-            }
-
-            // move to the down cell
-            if (isNotVisited((byte) (cell.getRow() + 1), cell.getCol(), grid)) {
-                path.push(grid[cell.getRow() + 1][cell.getCol()].visit());
-            }
-
-            // move to the left cell
-            if (isNotVisited(cell.getRow(), (byte) (cell.getCol() - 1), grid)) {
-                path.push(grid[cell.getRow()][cell.getCol() - 1].visit());
-            }
-
-            // move to the right cell
-            if (isNotVisited(cell.getRow(), (byte) (cell.getCol() + 1), grid)) {
-                path.push(grid[cell.getRow()][cell.getCol() + 1].visit());
-            }
+    private Optional<Cell> getPath(Cell current,
+                                   Coordinate destination) {
+        if (current.getCoordinate().equals(destination)) {
+            log.debug("Found destination with route {}", current);
+            return Optional.of(current);
         }
 
-        return -1;
+        List<Coordinate> newRoute = new ArrayList<>(current.getRoute());
+        newRoute.add(current.getCoordinate());
+
+        int currRow = current.getCoordinate().getRow();
+        int currCol = current.getCoordinate().getCol();
+        int nextRow = nextPosition(currRow, destination.getRow());
+        int nextCol = nextPosition(currCol, destination.getCol());
+
+        return getPath(Cell.newCell(Coordinate.of(nextRow, nextCol), newRoute), destination);
     }
 
-    private boolean isNotVisited(byte row, byte col, Cell[][] grid) {
-        return row - 1 >= 0 &&
-                !grid[row][col].isVisited();
-    }
 }

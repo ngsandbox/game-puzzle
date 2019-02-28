@@ -2,6 +2,7 @@ package org.game.puzzle.core;
 
 import lombok.extern.slf4j.Slf4j;
 import org.game.puzzle.core.configs.GameProperties;
+import org.game.puzzle.core.services.ArenaService;
 import org.game.puzzle.core.services.CharacteristicService;
 import org.game.puzzle.core.stubs.TestGenerator;
 import org.game.puzzle.core.subscription.InMemorySubscriptionService;
@@ -36,6 +37,11 @@ public class TestConfiguration {
     @Bean
     public CharacteristicService characteristicService(SubscriptionService subscriptionService, Generator generator){
         return new CharacteristicService(properties, subscriptionService, generator);
+    }
+
+    @Bean
+    public ArenaService arenaService(SubscriptionService subscriptionService, Generator generator){
+        return new ArenaService(properties, subscriptionService, generator);
     }
 
 }
