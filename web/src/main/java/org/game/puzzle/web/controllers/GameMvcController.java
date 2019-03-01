@@ -2,6 +2,8 @@ package org.game.puzzle.web.controllers;
 
 import lombok.extern.slf4j.Slf4j;
 import org.game.puzzle.core.services.SpeciesService;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,9 +27,14 @@ public class GameMvcController {
 
     @GetMapping("/game")
     public String displayTasks(Model model) {
-//        model.addAttribute("tasks", taskInfos);
-//        model.addAttribute("strategies", strategies);
-//        model.addAttribute("schedulers", Schedulers.SCHEDULERS);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String login = authentication.getName();
+        if (speciesService.doesRegistered(login)) {
+            model.addAttribute("species", speciesService.getSpeciesByLogin(login));
+        } else {
+            model.addAttribute("isNew", true);
+        }
+
         return "home";
     }
 }

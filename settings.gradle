@@ -1,5 +1,5 @@
 rootProject.name = 'game-puzzle'
 
-include 'core'
-include 'db'
+//include 'core'
+//include 'db'
 include 'web'

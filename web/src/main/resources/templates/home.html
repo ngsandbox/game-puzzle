@@ -12,16 +12,24 @@
 <body>
 <noscript><h2 style="color: #ff0000">Seems your browser doesn't support Javascript! Websocket relies on Javascript being
     enabled. Please enable Javascript and reload this page!</h2></noscript>
-<ul class="nav">
-    <li class="nav-item">
-        <a class="nav-link active" href="#">Game Puzzle</a>
-    </li>
-    <li class="nav-item">
-        <form th:action="@{/logout}" method="post">
-            <input type="submit" value="Logout"/>
-        </form>
-    </li>
-</ul>
+<nav class="navbar navbar-expand-md navbar-dark bg-dark">
+    <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="#">Game Puzzle</a>
+            </li>
+        </ul>
+    </div>
+    <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <form th:action="@{/logout}" method="post">
+                    <a class="nav-link" href="/logout">Logout</a>
+                </form>
+            </li>
+        </ul>
+    </div>
+</nav>
 
 <script type="application/javascript" src="/app.js"></script>
 </body>
