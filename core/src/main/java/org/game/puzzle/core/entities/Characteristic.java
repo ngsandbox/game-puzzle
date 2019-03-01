@@ -3,6 +3,7 @@ package org.game.puzzle.core.entities;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
+import org.game.puzzle.core.entities.species.Gender;
 
 @Getter
 @ToString
@@ -74,7 +75,7 @@ public class Characteristic {
      */
     private final int luck;
 
-    @Builder
+    @Builder(toBuilder = true)
     public Characteristic(String id,
                           Gender gender,
                           int strength,

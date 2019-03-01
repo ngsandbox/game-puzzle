@@ -7,16 +7,11 @@ import lombok.ToString;
 
 import java.util.Optional;
 
-@EqualsAndHashCode(of = "id")
+@EqualsAndHashCode(of = {"damage", "protection"})
 @ToString
-public class Armor {
-    private final String id;
+public class Equipment {
     private final Integer damage;
     private final Integer protection;
-
-    public String getId() {
-        return id;
-    }
 
     public Optional<Integer> getDamage() {
         return Optional.ofNullable(damage);
@@ -27,8 +22,7 @@ public class Armor {
     }
 
     @Builder
-    public Armor(@NonNull String id, Integer damage, Integer protection) {
-        this.id = id;
+    public Equipment(Integer damage, Integer protection) {
         this.damage = damage;
         this.protection = protection;
     }

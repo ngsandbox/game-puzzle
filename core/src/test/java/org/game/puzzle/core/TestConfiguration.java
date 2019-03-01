@@ -8,22 +8,19 @@ import org.game.puzzle.core.stubs.TestGenerator;
 import org.game.puzzle.core.subscription.InMemorySubscriptionService;
 import org.game.puzzle.core.subscription.SubscriptionService;
 import org.game.puzzle.core.utils.Generator;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Profile;
 
-import javax.inject.Inject;
-
 @Slf4j
-@Configuration
-@EnableConfigurationProperties(GameProperties.class)
+@Configuration()
+@EnableAutoConfiguration
 @Profile("core-test")
 public class TestConfiguration {
 
-    @Inject
-    public GameProperties properties;
-
+    @Primary
     @Bean
     public Generator generator() {
         return new TestGenerator();
@@ -35,12 +32,16 @@ public class TestConfiguration {
     }
 
     @Bean
-    public CharacteristicService characteristicService(SubscriptionService subscriptionService, Generator generator){
+    public CharacteristicService characteristicService(GameProperties properties,
+                                                       SubscriptionService subscriptionService,
+                                                       Generator generator) {
         return new CharacteristicService(properties, subscriptionService, generator);
     }
 
     @Bean
-    public ArenaService arenaService(SubscriptionService subscriptionService, Generator generator){
+    public ArenaService arenaService(GameProperties properties,
+                                     SubscriptionService subscriptionService,
+                                     Generator generator) {
         return new ArenaService(properties, subscriptionService, generator);
     }
 

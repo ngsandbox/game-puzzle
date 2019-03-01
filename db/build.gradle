@@ -1,0 +1,13 @@
+dependencies{
+    compile project(":core")
+
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: project['spring-boot.version']
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-jdbc', version: project['spring-boot.version']
+
+    implementation group: 'com.h2database', name: 'h2', version: project['h2.version']
+
+    // First dependency is for IDEA
+    testCompileOnly files { project(':core').sourceSets.test.java.srcDirs }
+    // Second is for Gradle
+    testCompile project(':core').sourceSets.test.output
+}

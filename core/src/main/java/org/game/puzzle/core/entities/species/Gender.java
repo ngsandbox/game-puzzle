@@ -1,4 +1,4 @@
-package org.game.puzzle.core.entities;
+package org.game.puzzle.core.entities.species;
 
 public enum Gender {
     NONE,

@@ -3,9 +3,8 @@ package org.game.puzzle.core.services;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.game.puzzle.core.configs.GameProperties;
-import org.game.puzzle.core.entities.Armor;
 import org.game.puzzle.core.entities.Range;
-import org.game.puzzle.core.entities.Species;
+import org.game.puzzle.core.entities.species.Species;
 import org.game.puzzle.core.subscription.SubscriptionService;
 import org.game.puzzle.core.subscription.events.MessageEvent;
 import org.game.puzzle.core.utils.Generator;
@@ -51,14 +50,6 @@ public class CharacteristicService {
         double experience = 0;
         for (Species victim : victims) {
             double victimCoeff = coeff * victim.getCharacteristic().getLevel();
-            if (victim.getArmor().map(Armor::getDamage).isPresent()) {
-                victimCoeff += coeff;
-            }
-
-            if (victim.getArmor().map(Armor::getProtection).isPresent()) {
-                victimCoeff += coeff;
-            }
-
             experience += minExperience + minExperience * victimCoeff;
         }
 
@@ -96,12 +87,11 @@ public class CharacteristicService {
         }
 
         Range defenderProtection = defender.getProtection();
-        int armorProtection = defender.getArmor().flatMap(Armor::getProtection).orElse(0);
         int endurance = attacker.getCharacteristic().getEndurance();
 
         double protectionCoeff = properties.getProtectionCoeff();
-        double protection = generator.nextDouble(defenderProtection.getDown() + armorProtection,
-                defenderProtection.getUp() + armorProtection);
+        double protection = generator.nextDouble(defenderProtection.getDown(),
+                defenderProtection.getUp());
         log.debug("Increase protection {} by endurance {}, level {} and coefficient {}", protection, endurance,
                 defender.getCharacteristic().getLevel(),
                 protectionCoeff);
@@ -111,10 +101,9 @@ public class CharacteristicService {
 
         double damageCoeff = properties.getDamageCoeff();
         Range attackerDamage = attacker.getDamage();
-        int armorDamage = attacker.getArmor().flatMap(Armor::getDamage).orElse(0);
         int strength = attacker.getCharacteristic().getStrength();
-        double damage = generator.nextDouble(attackerDamage.getDown() + armorDamage,
-                attackerDamage.getUp() + armorDamage);
+        double damage = generator.nextDouble(attackerDamage.getDown(),
+                attackerDamage.getUp());
         log.debug("Increase damage {} by strength {}, level {} and coefficient {}", damage, strength, attacker.getCharacteristic().getLevel(), damageCoeff);
         damage += damage * damageCoeff * strength;
         damage += damage * damageCoeff * attacker.getCharacteristic().getLevel();
@@ -127,8 +116,8 @@ public class CharacteristicService {
 
         //remove 10% from protection
         if (protection > 0) {
-            log.debug("Decrease damage {} by 10% of protection {}", damage, protection);
-            damage -= (protection / 10);
+            log.debug("Decrease damage {} by 50% of protection {}", damage, protection);
+            damage -= (protection / 2);
         }
 
         if (damage < 0) {

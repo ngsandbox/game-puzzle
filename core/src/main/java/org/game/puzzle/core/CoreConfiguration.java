@@ -14,9 +14,9 @@ import org.springframework.context.annotation.Configuration;
 @Slf4j
 @Configuration
 @EnableConfigurationProperties(GameProperties.class)
-@ComponentScan("org.game.puzzle.core")
 public class CoreConfiguration {
 
+    @ConditionalOnMissingBean
     @Bean
     public Generator generator() {
         return new Generator();

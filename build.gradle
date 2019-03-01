@@ -54,9 +54,9 @@ subprojects {
         compileOnly group: 'org.projectlombok', name: 'lombok', version: project['lombok.version']
         annotationProcessor group: 'org.projectlombok', name: 'lombok', version: project['lombok.version']
 
-        compile group: 'org.springframework.boot', name: 'spring-boot', version: project['spring-cloud.version']
-        compile group: 'org.springframework.boot', name: 'spring-boot-autoconfigure', version: project['spring-cloud.version']
-        compileOnly group: 'org.springframework.boot', name: 'spring-boot-configuration-processor', version: project['spring-cloud.version']
+        compile group: 'org.springframework.boot', name: 'spring-boot', version: project['spring-boot.version']
+        compile group: 'org.springframework.boot', name: 'spring-boot-autoconfigure', version: project['spring-boot.version']
+        compileOnly group: 'org.springframework.boot', name: 'spring-boot-configuration-processor', version: project['spring-boot.version']
 
         compile group: 'io.projectreactor', name: 'reactor-core', version: project['reactor.version']
 
@@ -65,9 +65,9 @@ subprojects {
         testImplementation "org.junit.jupiter:junit-jupiter-api:${project['junit-jupiter.version']}"
         testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${project['junit-jupiter.version']}"
 
-        testCompileOnly group: 'org.springframework.boot', name: 'spring-boot-configuration-processor', version: project['spring-cloud.version']
+        testCompileOnly group: 'org.springframework.boot', name: 'spring-boot-configuration-processor', version: project['spring-boot.version']
 
-        testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: project['spring-cloud.version']
+        testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: project['spring-boot.version']
         testImplementation group: 'io.projectreactor', name: 'reactor-test', version: project['reactor.version']
 
         testCompileOnly group: 'org.projectlombok', name: 'lombok', version: project['lombok.version']
@@ -75,7 +75,6 @@ subprojects {
     }
 
     test {
-        // Enable JUnit 5 (Gradle 4.6+).
         useJUnitPlatform()
     }
 }
