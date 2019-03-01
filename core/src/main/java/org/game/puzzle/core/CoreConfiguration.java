@@ -13,16 +13,17 @@ import org.springframework.context.annotation.Configuration;
 
 @Slf4j
 @Configuration
-@EnableConfigurationProperties(GameProperties.class)
+@EnableConfigurationProperties
+@ComponentScan("org.game.puzzle.core")
 public class CoreConfiguration {
 
-    @ConditionalOnMissingBean
+    @ConditionalOnMissingBean(Generator.class)
     @Bean
     public Generator generator() {
         return new Generator();
     }
 
-    @ConditionalOnMissingBean
+    @ConditionalOnMissingBean(SubscriptionService.class)
     @Bean
     public SubscriptionService getSubscriptionService() {
         return new InMemorySubscriptionService();

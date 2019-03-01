@@ -15,21 +15,13 @@ import java.util.List;
 
 
 @SpringBootTest(classes = {TestConfiguration.class})
-@ActiveProfiles("core-test")
 @Slf4j
 public class ArenaServiceTests {
-
-    private final GameProperties properties;
-    private final SubscriptionService subscriptionService;
 
     private final ArenaService arenaService;
 
     @Autowired
-    public ArenaServiceTests(GameProperties properties,
-                             SubscriptionService subscriptionService,
-                             ArenaService arenaService) {
-        this.properties = properties;
-        this.subscriptionService = subscriptionService;
+    public ArenaServiceTests(ArenaService arenaService) {
         this.arenaService = arenaService;
     }
 

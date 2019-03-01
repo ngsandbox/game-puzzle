@@ -16,8 +16,7 @@ import org.springframework.validation.annotation.Validated;
 public class GameProperties {
 
     /**
-     * Minimum experience for win, when your victim was an absolute weak and your level and S.P.E.C.I.A.L
-     * characteristics left much to be desired.
+     * Minimum experience for win
      */
     private int minExperience = 10;
 

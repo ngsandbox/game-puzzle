@@ -1,0 +1,25 @@
+plugins {
+    id 'org.springframework.boot' version '2.1.3.RELEASE'
+    id 'java'
+}
+
+apply plugin: 'io.spring.dependency-management'
+
+dependencies {
+
+    compile project(":db")
+
+    implementation group: 'org.springframework.boot', name: 'spring-boot-devtools', version: project['spring-boot.version']
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-websocket', version: project['spring-boot.version']
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-webflux', version: project['spring-boot.version']
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation', version: project['spring-boot.version']
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: project['spring-boot.version']
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-thymeleaf', version: project['spring-boot.version']
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: project['spring-boot.version']
+
+    // First dependency is for IDEA
+    testCompileOnly files { project(':core').sourceSets.test.java.srcDirs }
+    // Second is for Gradle
+    testCompile project(':core').sourceSets.test.output
+
+}

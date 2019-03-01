@@ -24,13 +24,14 @@ public class ArenaService {
     private final Generator generator;
 
     @Autowired
-    public ArenaService(@NonNull GameProperties properties,
-                        @NonNull SubscriptionService subscriptionService,
-                        @NonNull Generator generator) {
+    public ArenaService(GameProperties properties,
+                        SubscriptionService subscriptionService,
+                        Generator generator) {
         this.properties = properties;
         this.subscriptionService = subscriptionService;
         this.generator = generator;
     }
+
 
 
     /**

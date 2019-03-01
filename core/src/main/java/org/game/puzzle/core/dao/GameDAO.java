@@ -32,5 +32,5 @@ public interface GameDAO {
     /**
      * Remove species by login
      */
-    void removeById(String login);
+    void removeByLogin(String login);
 }

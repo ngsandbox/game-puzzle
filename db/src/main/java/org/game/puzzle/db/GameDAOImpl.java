@@ -63,7 +63,7 @@ public class GameDAOImpl implements GameDAO {
     }
 
     @Override
-    public void removeById(String id) {
+    public void removeByLogin(String id) {
         log.info("Remove species by id {}", id);
         speciesRepository.deleteById(id);
     }

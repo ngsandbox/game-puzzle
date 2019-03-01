@@ -24,9 +24,9 @@ public class CharacteristicService {
     private final Generator generator;
 
     @Autowired
-    public CharacteristicService(@NonNull GameProperties properties,
-                                 @NonNull SubscriptionService subscriptionService,
-                                 @NonNull Generator generator) {
+    public CharacteristicService(GameProperties properties,
+                                 SubscriptionService subscriptionService,
+                                 Generator generator) {
         this.properties = properties;
         this.subscriptionService = subscriptionService;
         this.generator = generator;

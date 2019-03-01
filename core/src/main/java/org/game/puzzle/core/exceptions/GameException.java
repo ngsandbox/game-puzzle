@@ -1,4 +1,4 @@
-package org.game.puzzle.core;
+package org.game.puzzle.core.exceptions;
 
 public class GameException extends RuntimeException {
     public GameException(String message) {

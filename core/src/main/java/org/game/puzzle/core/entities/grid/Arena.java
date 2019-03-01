@@ -3,7 +3,7 @@ package org.game.puzzle.core.entities.grid;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
-import org.game.puzzle.core.GameException;
+import org.game.puzzle.core.exceptions.GameException;
 
 @Slf4j
 @ToString
