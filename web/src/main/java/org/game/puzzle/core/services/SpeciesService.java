@@ -2,32 +2,26 @@ package org.game.puzzle.core.services;
 
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
-import org.game.puzzle.core.configs.GameProperties;
 import org.game.puzzle.core.dao.GameDAO;
 import org.game.puzzle.core.entities.Characteristic;
+import org.game.puzzle.core.entities.species.Human;
 import org.game.puzzle.core.entities.species.Species;
 import org.game.puzzle.core.exceptions.NotFoundException;
-import org.game.puzzle.core.utils.Generator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.validation.constraints.NotNull;
 import java.util.Optional;
 
 @Slf4j
 @Service
 public class SpeciesService {
 
-    private final GameProperties properties;
     private final GameDAO gameDAO;
-    private final Generator generator;
 
     @Autowired
-    public SpeciesService(GameProperties properties,
-                          GameDAO gameDAO,
-                          Generator generator) {
-        this.properties = properties;
+    public SpeciesService(GameDAO gameDAO) {
         this.gameDAO = gameDAO;
-        this.generator = generator;
     }
 
     /**
@@ -79,12 +73,17 @@ public class SpeciesService {
     /**
      * Remove species by login
      */
-    public void removeSpeciesByLogin(String login){
-        log.debug("Remove species by login");
+    public void removeSpeciesByLogin(String login) {
+        log.debug("Remove species by login {}", login);
         gameDAO.removeByLogin(login);
     }
 
     public boolean doesRegistered(@NonNull String login) {
         return gameDAO.doesRegistered(login);
+    }
+
+    public void addVictim(@NotNull String login, @NotNull Species victim) {
+        log.debug("For winner {} add victim {} ", login, victim);
+        gameDAO.addVictim(login, victim);
     }
 }

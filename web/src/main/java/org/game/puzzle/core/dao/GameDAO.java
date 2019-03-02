@@ -4,6 +4,7 @@ import lombok.NonNull;
 import org.game.puzzle.core.entities.Characteristic;
 import org.game.puzzle.core.entities.species.Species;
 
+import javax.validation.constraints.NotNull;
 import java.util.Optional;
 
 public interface GameDAO {
@@ -35,4 +36,6 @@ public interface GameDAO {
     void removeByLogin(String login);
 
     boolean doesRegistered(String login);
+
+    void addVictim(String login, Species victim);
 }

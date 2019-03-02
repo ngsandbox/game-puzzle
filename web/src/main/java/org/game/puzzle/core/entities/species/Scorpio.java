@@ -12,10 +12,10 @@ import java.util.Collections;
 @Getter
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public class Ant extends Species {
+public class Scorpio extends Species {
     @Override
     public SpeciesType getType() {
-        return SpeciesType.ANT;
+        return SpeciesType.SCORPIO;
     }
 
     @Override
@@ -28,8 +28,9 @@ public class Ant extends Species {
         return new Range(1, 1);
     }
 
-    public Ant(@NonNull String id,
-               @NonNull Characteristic characteristic) {
-        super(id, id, characteristic, Collections.emptyList());
+    public Scorpio(String id,
+                   @NonNull String login,
+                   @NonNull Characteristic characteristic) {
+        super(id, login, characteristic, Collections.emptyList());
     }
 }

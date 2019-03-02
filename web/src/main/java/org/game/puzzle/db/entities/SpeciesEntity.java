@@ -33,22 +33,24 @@ public class SpeciesEntity {
     @Column(name = "type", nullable = false)
     private SpeciesType type;
 
-
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private CharacteristicEntity characteristic;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "winner")
     private List<SpeciesEntity> victims;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private SpeciesEntity winner;
+
 
     public SpeciesEntity(String speciesId,
                          @NonNull String login,
                          @NonNull SpeciesType type,
-                         @NonNull CharacteristicEntity characteristic,
-                         @NonNull List<SpeciesEntity> victims) {
+                         @NonNull CharacteristicEntity characteristic) {
+                         //@NonNull List<SpeciesEntity> victims) {
         this.speciesId = speciesId;
         this.login = login;
         this.type = type;
         this.characteristic = characteristic;
-        this.victims = victims;
     }
 }

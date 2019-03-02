@@ -7,6 +7,7 @@ import lombok.ToString;
 import org.game.puzzle.core.entities.Characteristic;
 import org.game.puzzle.core.entities.Range;
 
+import javax.validation.constraints.NotNull;
 import java.util.Collections;
 
 @Getter
@@ -28,8 +29,9 @@ public class Gecko extends Species {
         return new Range(0, 0);
     }
 
-    public Gecko(@NonNull String id,
+    public Gecko(String id,
+                 @NotNull String login,
                  @NonNull Characteristic characteristic) {
-        super(id, id, characteristic, Collections.emptyList());
+        super(id, login, characteristic, Collections.emptyList());
     }
 }

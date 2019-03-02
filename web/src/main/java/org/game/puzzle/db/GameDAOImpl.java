@@ -15,7 +15,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.transaction.Transactional;
+import javax.validation.constraints.NotNull;
+import java.util.List;
 import java.util.Optional;
+
+import static java.util.stream.Collectors.toList;
 
 @Slf4j
 @Transactional(rollbackOn = Exception.class)
@@ -33,9 +37,13 @@ public class GameDAOImpl implements GameDAO {
     }
 
     @Override
-    public String save(@NonNull Species human) {
-        log.debug("Save species {}", human);
-        SpeciesEntity result = speciesRepository.save(SpeciesFactory.from(human));
+    public String save(@NonNull Species species) {
+        log.debug("Save species {}", species);
+        SpeciesEntity speciesEntity = SpeciesFactory.from(species);
+        List<SpeciesEntity> victims = species.getVictims().stream().map(SpeciesFactory::from).collect(toList());
+        SpeciesEntity result = speciesRepository.save(speciesEntity);
+        victims.forEach(v -> v.setWinner(result));
+        speciesRepository.saveAll(victims);
         log.trace("Species was saved {}", result);
         return result.getSpeciesId();
     }
@@ -63,14 +71,25 @@ public class GameDAOImpl implements GameDAO {
     }
 
     @Override
-    public void removeByLogin(String id) {
-        log.info("Remove species by id {}", id);
-        speciesRepository.deleteById(id);
+    public void removeByLogin(String login) {
+        log.info("Remove species by login {}", login);
+        speciesRepository.removeByLogin(login);
     }
 
     @Override
     public boolean doesRegistered(@NonNull String login) {
         log.info("Check existance by login {}", login);
         return speciesRepository.existsByLogin(login);
+    }
+
+    @Override
+    public void addVictim(@NotNull String login, @NotNull Species victim) {
+        log.debug("Add to winner {} new victim {}", login, victim);
+        SpeciesEntity winner = speciesRepository
+                .findByLoginIgnoreCase(login)
+                .orElseThrow(() -> new DbException("Winner not found by login " + login));
+        SpeciesEntity victimEntity = SpeciesFactory.from(victim);
+        victimEntity.setWinner(winner);
+        speciesRepository.save(victimEntity);
     }
 }

@@ -3,7 +3,7 @@ package org.game.puzzle.core;
 import lombok.extern.slf4j.Slf4j;
 import org.game.puzzle.TestConfiguration;
 import org.game.puzzle.core.configs.GameProperties;
-import org.game.puzzle.core.entities.species.Ant;
+import org.game.puzzle.core.entities.species.Scorpio;
 import org.game.puzzle.core.entities.species.Gecko;
 import org.game.puzzle.core.entities.species.Human;
 import org.game.puzzle.core.entities.species.Species;
@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.game.puzzle.core.utils.CalcUtils.percent;
 import static org.game.puzzle.stubs.CharacteristicStub.getCharacteristic;
 
 
@@ -42,13 +43,19 @@ public class GamePuzzleApplicationTests {
     }
 
     @Test
+    void testPercents() {
+        Assertions.assertEquals(70, percent(0, 10, 7));
+        Assertions.assertEquals(40, percent(0, 1000, 400));
+    }
+
+    @Test
     void testCalculatedExperience() {
         Species winner = new Human("id1", "winner", getCharacteristic(0).toBuilder()
                 .level(5).build());
         List<Species> victims = Arrays.asList(new Human("id1", "winner", getCharacteristic(0).toBuilder()
                         .level(2).build()),
-                new Ant("antVictim", getCharacteristic(0).toBuilder().level(3).build()),
-                new Gecko("geckoVictim", getCharacteristic(0).toBuilder().level(4).build()));
+                new Scorpio(null, "antVictim", getCharacteristic(0).toBuilder().level(3).build()),
+                new Gecko(null, "geckoVictim", getCharacteristic(0).toBuilder().level(4).build()));
         long experience = characteristicService.calcExperience(winner, null);
         Assertions.assertEquals(0, experience, "The experience is not right for victims");
 

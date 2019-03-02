@@ -1,7 +1,7 @@
 package org.game.puzzle.db.factories;
 
 import lombok.extern.slf4j.Slf4j;
-import org.game.puzzle.core.entities.species.Ant;
+import org.game.puzzle.core.entities.species.Scorpio;
 import org.game.puzzle.core.entities.species.Gecko;
 import org.game.puzzle.core.entities.species.Human;
 import org.game.puzzle.core.entities.species.Species;
@@ -24,8 +24,8 @@ public class SpeciesFactory {
         return new SpeciesEntity(species.getId(),
                 species.getLogin(),
                 species.getType(),
-                CharacteristicFactory.from(species.getCharacteristic()),
-                species.getVictims().stream().map(SpeciesFactory::from).collect(toList()));
+                CharacteristicFactory.from(species.getCharacteristic()));
+        //species.getVictims().stream().map(SpeciesFactory::from).collect(toList()));
     }
 
     public static Species convert(SpeciesEntity entity, boolean full) {
@@ -34,8 +34,8 @@ public class SpeciesFactory {
         }
 
         switch (entity.getType()) {
-            case ANT:
-                return getAnt(entity);
+            case SCORPIO:
+                return getScorpio(entity);
             case GECKO:
                 return getGecko(entity);
             case HUMAN:
@@ -43,17 +43,18 @@ public class SpeciesFactory {
             default:
                 log.error("Species converter is not implemented for {}", entity);
                 throw new DbException("Species type is not implemented: " + entity.getType());
-
         }
     }
 
-    private static Ant getAnt(SpeciesEntity entity) {
-        return new Ant(entity.getSpeciesId(),
+    private static Scorpio getScorpio(SpeciesEntity entity) {
+        return new Scorpio(entity.getSpeciesId(),
+                entity.getLogin(),
                 CharacteristicFactory.to(entity.getCharacteristic()));
     }
 
     private static Gecko getGecko(SpeciesEntity entity) {
         return new Gecko(entity.getSpeciesId(),
+                entity.getLogin(),
                 CharacteristicFactory.to(entity.getCharacteristic()));
     }
 

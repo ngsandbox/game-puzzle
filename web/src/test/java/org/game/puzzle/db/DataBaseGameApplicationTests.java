@@ -3,12 +3,14 @@ package org.game.puzzle.db;
 import lombok.extern.slf4j.Slf4j;
 import org.game.puzzle.TestConfiguration;
 import org.game.puzzle.core.entities.Characteristic;
-import org.game.puzzle.core.entities.species.Ant;
+import org.game.puzzle.core.entities.species.Scorpio;
 import org.game.puzzle.core.entities.species.Gecko;
 import org.game.puzzle.core.entities.species.Human;
 import org.game.puzzle.core.entities.species.Species;
 import org.game.puzzle.core.exceptions.NotFoundException;
 import org.game.puzzle.core.services.SpeciesService;
+import org.game.puzzle.db.factories.CharacteristicFactory;
+import org.game.puzzle.db.factories.SpeciesFactory;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -41,35 +43,76 @@ class DataBaseGameApplicationTests {
     }
 
     @Test
-    void testSaveSpecies() {
+    void testSaveWinnersAndVictims() {
 
         Characteristic characteristic = getCharacteristic(0).toBuilder()
                 .agility(10).charisma(10).intelligence(10).build();
-        Species human = new Human("human1", "winner", characteristic,
-                Arrays.asList(new Ant("victim1", characteristic),
-                        new Gecko("victim2", characteristic)));
-        String humanId = speciesService.save(human);
+        Species winner = new Human(null, "winner11", characteristic,
+                Arrays.asList(new Scorpio(null, "victim11", characteristic),
+                        new Gecko(null, "victim12", characteristic)));
+        String humanId = speciesService.save(winner);
         Assertions.assertNotNull(humanId, "The result identifier is empty");
         Species result = speciesService.getSpeciesById(humanId);
         Assertions.assertNotNull(result, "Species not found by id: " + humanId);
 
-        result = speciesService.getSpeciesByLogin(human.getLogin());
-        Assertions.assertNotNull(result, "Species not found by login: " + human.getLogin());
+        result = speciesService.getSpeciesByLogin(winner.getLogin());
+        Assertions.assertNotNull(result, "Species not found by login: " + winner.getLogin());
 
-        result = speciesService.getSpeciesByLogin("victim1");
+        result = speciesService.getSpeciesByLogin("victim11");
         Assertions.assertNotNull(result, "Species not found by login: victim1");
 
-        speciesService.removeSpeciesByLogin(humanId);
+        result = speciesService.getSpeciesByLogin(winner.getLogin());
+        Assertions.assertNotNull(result, "Species not found by login: " + winner.getLogin());
+        Assertions.assertEquals(2, result.getVictims().size());
+
+
+        Human victim3 = new Human(null, "victim13", characteristic);
+        speciesService.addVictim(winner.getLogin(), victim3);
+        Assertions.assertNotNull(result, "Victim not found by login: " + victim3.getLogin());
+
+        Assertions.assertThrows(DbException.class,
+                () -> speciesService.addVictim("winner42", victim3),
+                "Winner still exist with login: winner42");
+
+        result = speciesService.getSpeciesByLogin(winner.getLogin());
+        Assertions.assertNotNull(result, "Species not found by login: " + winner.getLogin());
+        Assertions.assertEquals(3, result.getVictims().size());
+
+
+        Species victim3Result = speciesService.getSpeciesByLogin(victim3.getLogin());
+        Assertions.assertNotNull(victim3Result, "Species not found by login: " + victim3.getLogin());
+
+        speciesService.removeSpeciesByLogin("victim11");
+        speciesService.removeSpeciesByLogin("victim12");
+        speciesService.removeSpeciesByLogin("victim13");
+        speciesService.removeSpeciesByLogin("winner11");
         Assertions.assertThrows(NotFoundException.class,
                 () -> speciesService.getSpeciesById(humanId),
                 "Species still exist with login: " + humanId);
     }
 
     @Test
+    void testSaveUser() {
+        Characteristic characteristic = getCharacteristic(0).toBuilder()
+                .agility(10).charisma(10).intelligence(10).build();
+        Species user = new Human(null, "login", characteristic);
+        Assertions.assertFalse(speciesService.doesRegistered(user.getLogin()),
+                "User is already registered");
+
+        String userId = speciesService.save(user);
+        Assertions.assertNotNull(userId, "The result identifier is empty");
+
+        Assertions.assertTrue(speciesService.doesRegistered(user.getLogin()),
+                "User is not registered");
+
+        speciesService.removeSpeciesByLogin("login");
+    }
+
+    @Test
     void testUpdateCharacteristic() {
         Characteristic characteristic = getCharacteristic(0).toBuilder()
                 .agility(10).charisma(8).intelligence(7).build();
-        Species human = new Human("human1", "winner", characteristic);
+        Species human = new Human(null, "winner2", characteristic);
         String humanId = speciesService.save(human);
         Assertions.assertNotNull(humanId, "The result identifier is empty");
 
@@ -94,10 +137,18 @@ class DataBaseGameApplicationTests {
         Assertions.assertEquals(6, characteristic.getLevel(), "Species level is not right");
 
 
-        speciesService.removeSpeciesByLogin(humanId);
+        speciesService.removeSpeciesByLogin("winner2");
         Assertions.assertThrows(NotFoundException.class,
                 () -> speciesService.getSpeciesById(humanId),
                 "Species still exist with login: " + humanId);
+    }
+
+    @Test
+    void testFactories() {
+        Assertions.assertNull(SpeciesFactory.convert(null, true));
+        Assertions.assertNull(SpeciesFactory.from(null));
+        Assertions.assertNull(CharacteristicFactory.from(null));
+        Assertions.assertNull(CharacteristicFactory.to(null));
     }
 }
 

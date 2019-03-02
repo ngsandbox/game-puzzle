@@ -5,7 +5,7 @@ import org.game.puzzle.core.entities.species.Species;
 import org.game.puzzle.core.services.ArenaService;
 import org.game.puzzle.core.services.CharacteristicService;
 import org.game.puzzle.core.services.SpeciesService;
-import org.game.puzzle.web.models.SpeciesModel;
+import org.game.puzzle.web.models.SpeciesStats;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -47,7 +47,7 @@ public class GameRestController {
     }
 
     @PostMapping("/species")
-    public void saveSpecies(@Valid @RequestBody SpeciesModel species) {
+    public void saveHumanSpecies(@Valid @RequestBody SpeciesStats species) {
         log.debug("Save species model {}", species);
         speciesService.save(species.convert(getLogin()));
     }

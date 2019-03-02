@@ -25,5 +25,7 @@ public interface SpeciesRepository extends CrudRepository<SpeciesEntity, String>
     @EntityGraph(value = "SpeciesEntity.full", type = FETCH)
     Optional<SpeciesEntity> findByLoginIgnoreCase(@Param("login") String login);
 
+    void removeByLogin(String login);
+
     boolean existsByLogin(String login);
 }

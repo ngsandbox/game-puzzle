@@ -5,10 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.game.puzzle.core.entities.species.Gender;
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 /**
  * @see org.game.puzzle.core.entities.Characteristic
@@ -22,7 +19,7 @@ import javax.persistence.Id;
 @Entity
 public class CharacteristicEntity {
     @Id
-    @Column(name = "speciesId")
+    @Column(name = "characteristicId")
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid")
     private String characteristicId;
@@ -58,6 +55,9 @@ public class CharacteristicEntity {
 
     @Column(name = "luck", nullable = false)
     private int luck;
+
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private SpeciesEntity species;
 
     public CharacteristicEntity(String characteristicId,
                                 Gender gender,

@@ -7,7 +7,7 @@ import org.game.puzzle.core.entities.species.Gender;
 public class CharacteristicStub {
     public static Characteristic getCharacteristic(int level) {
         Characteristic.CharacteristicBuilder builder = Characteristic.builder();
-        builder.id("id" + level);
+        //builder.id("id" + level);
         builder.gender(Gender.NONE);
         builder.strength(8);
         builder.perception(9);

@@ -32,8 +32,8 @@
     </div>
 </nav>
 
-<div th:if="${isNew}" th:replace="fragments/new">...</div>
-<div th:if="${!isNew}" th:replace="fragments/stats">...</div>
+<div th:replace="${view}">...</div>
+<!--<div th:replace="fragments/stats">...</div>-->
 
 <script type="application/javascript" src="/js/app.js"></script>
 </body>
