@@ -35,6 +35,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers(
                         "/miscellaneous/bootstrap/**",
+                        "/imgs/**",
                         "/miscellaneous/**",
                         "/js/**").permitAll()
                 .anyRequest()
@@ -46,6 +47,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                 .permitAll();
+        http.csrf().disable();
+        //        http
+//                .requiresChannel()
+//                .antMatchers("/api/**")
+//                .requiresSecure();
     }
 
     @Bean

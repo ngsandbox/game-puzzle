@@ -1,0 +1,99 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<div class="container" th:fragment="new">
+    <form id="createSpeciesForm" class="needs-validation" action="/save">
+        <div class="row">
+            <div class="col-2"></div>
+            <div class="col-8">
+                <div class="alert alert-danger d-none" id="createSpeciesErrors" role="alert" hidden="hidden">
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <div class="media">
+                            <img src="/imgs/male.png" class="mr-3" alt="Male">
+                            <div class="media-body">
+                                <div class="form-check form-check-inline">
+                                    <label class="form-check-label">
+                                        <input class="form-check-input" type="radio"
+                                               name="gender" value="MALE" checked>Male</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="media">
+                            <img src="/imgs/female.png" class="mr-3" alt="Male">
+                            <div class="media-body">
+                                <div class="form-check form-check-inline">
+                                    <label class="form-check-label">
+                                        <input class="form-check-input" type="radio"
+                                               name="gender" value="FEMALE">Female</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <div class="form-group row">
+                            <label class="col-sm-4 col-form-label" for="strength">Strength</label>
+                            <div class="col-sm-8">
+                                <input type="number" name="strength" required class="form-control" id="strength"
+                                       value="5">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-4 col-form-label" for="perception">Perception</label>
+                            <div class="col-sm-8">
+                                <input type="number" name="perception" required class="form-control" id="perception"
+                                       value="5">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-4 col-form-label" for="endurance">Endurance</label>
+                            <div class="col-sm-8">
+                                <input type="number" name="endurance" required class="form-control" id="endurance"
+                                       value="5">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-4 col-form-label" for="charisma">Charisma</label>
+                            <div class="col-sm-8">
+                                <input type="number" name="charisma" required class="form-control" id="charisma"
+                                       value="5">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-4 col-form-label" for="intelligence">Intelligence</label>
+                            <div class="col-sm-8">
+                                <input type="number" name="intelligence" required class="form-control" id="intelligence"
+                                       value="5">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-4 col-form-label" for="agility">Agility</label>
+                            <div class="col-sm-8">
+                                <input type="number" name="agility" required class="form-control" id="agility"
+                                       value="5">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-4 col-form-label" for="luck">Luck</label>
+                            <div class="col-sm-8">
+                                <input type="number" name="luck" required class="form-control" id="luck"
+                                       value="5">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" id="createSpeciesBtn" class="btn btn-primary" data-dismiss="modal">Save
+                    </button>
+                </div>
+            </div>
+            <div class="col-2"></div>
+        </div>
+        <script type="application/javascript" src="/js/create.js"></script>
+    </form>
+</div>
+</html>

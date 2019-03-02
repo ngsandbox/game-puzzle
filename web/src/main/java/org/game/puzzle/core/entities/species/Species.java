@@ -29,7 +29,7 @@ public abstract class Species {
 
     private final Characteristic characteristic;
 
-    public Species(@NonNull String id, @NonNull String login,
+    public Species(String id, @NonNull String login,
             @NonNull Characteristic characteristic,
             @NonNull List<Species> victims) {
         this.id = id;

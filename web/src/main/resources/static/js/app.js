@@ -1,6 +1,9 @@
 "use strict";
 let gameListenerClient;
-
+$(function () {
+    connect();
+    $.get("/v1/game/listen");
+});
 
 function initStompClient(onConnection) {
     const client = Stomp.over(new SockJS('/game-websocket'));
@@ -33,8 +36,3 @@ function renderMessage(message) {
     if (message.id && message.status) {
     }
 }
-
-$(function () {
-    connect();
-    $.get("/v1/game/listen");
-});

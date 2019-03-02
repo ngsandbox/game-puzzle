@@ -15,12 +15,12 @@ public class ErrorDetails implements Serializable {
 
     private static final long serialVersionUID = 2735225803128625332L;
     private Date timestamp;
-    private String message;
+    private String field;
     private String details;
 
-    public ErrorDetails(@NonNull Date timestamp, @NonNull String message, @NonNull String details) {
+    public ErrorDetails(@NonNull Date timestamp, @NonNull String field, @NonNull String details) {
         this.timestamp = timestamp;
-        this.message = message;
+        this.field = field;
         this.details = details;
     }
 }

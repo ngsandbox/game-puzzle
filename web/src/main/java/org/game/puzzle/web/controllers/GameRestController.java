@@ -5,16 +5,17 @@ import org.game.puzzle.core.entities.species.Species;
 import org.game.puzzle.core.services.ArenaService;
 import org.game.puzzle.core.services.CharacteristicService;
 import org.game.puzzle.core.services.SpeciesService;
+import org.game.puzzle.web.models.SpeciesModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @Slf4j
 @RestController
-@RequestMapping(value = "/v1/")
+@RequestMapping(value = "/api/v1/")
 public class GameRestController {
 
     private final SpeciesService speciesService;
@@ -39,5 +40,15 @@ public class GameRestController {
     public Species getSpeciesByLogin(@PathVariable String login) {
         log.debug("Find species by login {}", login);
         return speciesService.getSpeciesByLogin(login);
+    }
+
+    private String getLogin(){
+        return SecurityContextHolder.getContext().getAuthentication().getName();
+    }
+
+    @PostMapping("/species")
+    public void saveSpecies(@Valid @RequestBody SpeciesModel species) {
+        log.debug("Save species model {}", species);
+        speciesService.save(species.convert(getLogin()));
     }
 }

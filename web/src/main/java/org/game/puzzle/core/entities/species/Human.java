@@ -31,13 +31,13 @@ public class Human extends Species {
         return new Range(0, 0);
     }
 
-    public Human(@NonNull String id,
+    public Human(String id,
                  @NonNull String login,
                  @NonNull Characteristic characteristic) {
         this(id, login, characteristic, Collections.emptyList());
     }
 
-    public Human(@NonNull String id,
+    public Human(String id,
                  @NonNull String login,
                  @NonNull Characteristic characteristic,
                  @NonNull List<Species> victims) {
