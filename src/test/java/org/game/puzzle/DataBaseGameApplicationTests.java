@@ -1,4 +1,4 @@
-package org.game.puzzle.db;
+package org.game.puzzle;
 
 import lombok.extern.slf4j.Slf4j;
 import org.game.puzzle.TestConfiguration;
@@ -9,6 +9,7 @@ import org.game.puzzle.core.entities.species.Human;
 import org.game.puzzle.core.entities.species.Species;
 import org.game.puzzle.core.exceptions.NotFoundException;
 import org.game.puzzle.core.services.SpeciesService;
+import org.game.puzzle.db.DbException;
 import org.game.puzzle.db.factories.CharacteristicFactory;
 import org.game.puzzle.db.factories.SpeciesFactory;
 import org.junit.jupiter.api.Assertions;

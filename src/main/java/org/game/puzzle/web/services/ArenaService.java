@@ -3,7 +3,6 @@ package org.game.puzzle.web.services;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.game.puzzle.core.configs.GameProperties;
-import org.game.puzzle.core.entities.Characteristic;
 import org.game.puzzle.core.entities.FightSession;
 import org.game.puzzle.core.entities.grid.Arena;
 import org.game.puzzle.core.entities.grid.Cell;
@@ -11,14 +10,11 @@ import org.game.puzzle.core.entities.grid.Coordinate;
 import org.game.puzzle.core.entities.species.Species;
 import org.game.puzzle.core.services.CharacteristicService;
 import org.game.puzzle.core.services.SpeciesService;
-import org.game.puzzle.core.subscription.SubscriptionService;
-import org.game.puzzle.core.utils.Generator;
 import org.game.puzzle.web.models.MoveModel;
 import org.game.puzzle.web.models.Position;
 import org.game.puzzle.web.models.SpeciesInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 
 import javax.validation.constraints.NotNull;
 import java.util.*;
@@ -32,20 +28,29 @@ public class ArenaService {
 
     private final CharacteristicService characteristicService;
     private final GameProperties properties;
-    private final SubscriptionService subscriptionService;
     private final SpeciesService speciesService;
-    private final Generator generator;
 
     @Autowired
     public ArenaService(CharacteristicService characteristicService,
                         GameProperties properties,
-                        SubscriptionService subscriptionService,
-                        SpeciesService speciesService, Generator generator) {
+                        SpeciesService speciesService) {
         this.characteristicService = characteristicService;
         this.properties = properties;
-        this.subscriptionService = subscriptionService;
         this.speciesService = speciesService;
-        this.generator = generator;
+    }
+
+    public FightSession createFightSession(@NotNull Species human) {
+        log.debug("Create new fight session for login", human.getLogin());
+        Species enemy = speciesService.createSpecies(human.getCharacteristic().getLevel());
+        FightSession fightSession = new FightSession();
+        fightSession.setLogin(human.getLogin());
+        fightSession.setUserHit(true);
+        fightSession.setArena(createArena());
+        fightSession.setUserInfo(speciesService.calcSpeciesInfo(human));
+        fightSession.setEnemyInfo(speciesService.calcSpeciesInfo(enemy));
+        fightSession.setUserPosition(Coordinate.of(1, 1));
+        fightSession.setEnemyPosition(Coordinate.of(fightSession.getArena().getSize() - 2, fightSession.getArena().getSize() - 2));
+        return fightSession;
     }
 
     /**
@@ -56,14 +61,13 @@ public class ArenaService {
         return new Arena(properties.getArenaSize());
     }
 
-    public MoveModel makeMove(@NonNull Position position, @NotNull FightSession fightSession) {
-        log.debug("Calculate move to position {}", position);
+    public MoveModel makeMove(@NonNull Coordinate toCoordinate, @NotNull FightSession fightSession) {
+        log.debug("Calculate move to coordinates {}", toCoordinate);
         boolean userHit = fightSession.isUserHit();
-        Coordinate toPosition = position.convert();
         Coordinate fromAtacker = userHit ? fightSession.getUserPosition() : fightSession.getEnemyPosition();
-        if (fromAtacker.equals(toPosition)) {
+        if (fromAtacker.equals(toCoordinate)) {
             log.debug("Skip on select the same atacker's location");
-            new MoveModel(userHit, 0, Collections.emptyList(), false, false);
+            return new MoveModel(userHit, 0, Collections.emptyList(), false, false);
         }
 
         Coordinate defenderPosition = userHit ? fightSession.getEnemyPosition() : fightSession.getUserPosition();
@@ -72,14 +76,14 @@ public class ArenaService {
         SpeciesInfo defender = userHit ? fightSession.getEnemyInfo() : fightSession.getUserInfo();
 
         Integer steps = atacker.getStats().getSteps();
-        List<Coordinate> route = findRoute(fromAtacker, toPosition, steps,
+        List<Coordinate> route = findRoute(fromAtacker, toCoordinate, steps,
                 new TreeSet<>(asList(fightSession.getEnemyPosition(), fightSession.getUserPosition())));
         int restSteps = steps - route.size();
         int damage = 0;
         boolean finish = false;
         Species atackerSpecies = atacker.convert();
         Species defenderSpecies = defender.convert();
-        if (toPosition.equals(defenderPosition) && restSteps > 0) {
+        if (toCoordinate.equals(defenderPosition) && restSteps > 0) {
             log.debug("Calculate additional damage for the rest steps {}", restSteps);
             for (int i = 0; i < restSteps; i++) {
                 damage += characteristicService.calcDamage(atackerSpecies, defenderSpecies);
@@ -109,8 +113,9 @@ public class ArenaService {
 
         fightSession.setUserHit(!userHit);
 
-        log.debug("Result damage {}, is finished {} and route {}", damage, route, finish);
-        return new MoveModel(userHit, damage, route, finish, true);
+        List<Position> coordinates = route.stream().map(Position::convert).collect(toList());
+        log.debug("Result damage {}, is finished {} and route {}", damage, coordinates, finish);
+        return new MoveModel(userHit, damage, coordinates, finish, true);
     }
 
     /**

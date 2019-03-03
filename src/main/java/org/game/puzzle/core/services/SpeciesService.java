@@ -165,6 +165,7 @@ public class SpeciesService {
         Characteristic characteristic = species.getCharacteristic();
         return SpeciesStats.builder()
                 .id(characteristic.getId())
+                .experience(characteristic.getExperience())
                 .gender(characteristic.getGender())
                 .strength(characteristic.getStrength())
                 .perception(characteristic.getPerception())

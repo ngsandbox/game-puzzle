@@ -64,7 +64,7 @@ public class GameDAOImpl implements GameDAO {
         log.debug("Update {} {}", characteristicId, experience);
         characteristicRepository.findById(characteristicId)
                 .map(c -> {
-                    c.setExperience(experience);
+                    c.setExperience(c.getExperience() + experience);
                     characteristicRepository.save(c);
                     return c;
                 }).orElseThrow(() -> new DbException("Characteristic not found " + characteristicId));

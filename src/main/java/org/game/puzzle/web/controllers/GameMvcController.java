@@ -2,12 +2,10 @@ package org.game.puzzle.web.controllers;
 
 import lombok.extern.slf4j.Slf4j;
 import org.game.puzzle.core.entities.FightSession;
-import org.game.puzzle.core.entities.grid.Coordinate;
 import org.game.puzzle.core.entities.species.Species;
-import org.game.puzzle.web.services.ArenaService;
-import org.game.puzzle.core.services.CharacteristicService;
 import org.game.puzzle.core.services.SpeciesService;
 import org.game.puzzle.web.models.SpeciesInfo;
+import org.game.puzzle.web.services.ArenaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -25,15 +23,12 @@ public class GameMvcController {
 
     private final SpeciesService speciesService;
     private final ArenaService arenaService;
-    private final CharacteristicService characteristicService;
 
     @Autowired
     public GameMvcController(SpeciesService speciesService,
-                             ArenaService arenaService,
-                             CharacteristicService characteristicService) {
+                             ArenaService arenaService) {
         this.speciesService = speciesService;
         this.arenaService = arenaService;
-        this.characteristicService = characteristicService;
     }
 
 
@@ -43,9 +38,8 @@ public class GameMvcController {
     }
 
     @GetMapping("/game")
-    public String displayTasks(Model model, HttpSession session) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String login = authentication.getName();
+    public String displayGame(Model model) {
+        String login = getLogin();
 
         if (speciesService.doesRegistered(login)) {
             Species human = speciesService.getSpeciesByLogin(login);
@@ -59,24 +53,23 @@ public class GameMvcController {
         return "home";
     }
 
+    @GetMapping("/fight")
+    public ModelAndView redirectToGame() {
+        return new ModelAndView("redirect:/game");
+    }
+
     @PostMapping("/fight")
     public String startFighting(Model model, HttpSession session) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String login = authentication.getName();
-
-        Species human = speciesService.getSpeciesByLogin(login);
-        Species enemy = speciesService.createSpecies(human.getCharacteristic().getLevel());
-
-        FightSession fightSession = new FightSession();
-        fightSession.setLogin(login);
-        fightSession.setUserHit(true);
-        fightSession.setArena(arenaService.createArena());
-        fightSession.setUserInfo(speciesService.calcSpeciesInfo(human));
-        fightSession.setEnemyInfo(speciesService.calcSpeciesInfo(enemy));
-        fightSession.setUserPosition(Coordinate.of(1, 1));
-        fightSession.setEnemyPosition(Coordinate.of(fightSession.getArena().getSize() - 2, fightSession.getArena().getSize() - 2));
+        Species human = speciesService.getSpeciesByLogin(getLogin());
+        FightSession fightSession = arenaService.createFightSession(human);
         session.setAttribute("userSession", fightSession);
         model.addAttribute("fight", fightSession.copy());
         return "fight";
     }
+
+    private String getLogin() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return authentication.getName();
+    }
+
 }

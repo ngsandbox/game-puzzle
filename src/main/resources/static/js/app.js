@@ -1,8 +1,6 @@
 "use strict";
 let gameListenerClient;
 $(function () {
-    connect();
-    $.get("/v1/game/listen");
 });
 
 function initStompClient(onConnection) {

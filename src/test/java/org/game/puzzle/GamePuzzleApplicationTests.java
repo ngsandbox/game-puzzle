@@ -1,4 +1,4 @@
-package org.game.puzzle.core;
+package org.game.puzzle;
 
 import lombok.extern.slf4j.Slf4j;
 import org.game.puzzle.TestConfiguration;

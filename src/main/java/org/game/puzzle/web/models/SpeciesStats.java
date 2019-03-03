@@ -3,15 +3,14 @@ package org.game.puzzle.web.models;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import org.game.puzzle.core.entities.Characteristic;
-import org.game.puzzle.core.entities.species.*;
+import org.game.puzzle.core.entities.species.Gender;
+import org.game.puzzle.core.entities.species.Human;
+import org.game.puzzle.core.entities.species.Species;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-
-import java.util.Arrays;
 import java.util.List;
-import java.util.UUID;
 
 import static org.game.puzzle.core.utils.CalcUtils.percent;
 
@@ -32,9 +31,9 @@ public class SpeciesStats {
     private Integer pctAgility;
     private Integer pctIntelligence;
     private Integer pctCharisma;
-    private Integer minExperience;
-    private Integer maxExperience;
-    private Integer pctExperience;
+    private Long minExperience;
+    private Long maxExperience;
+    private Long pctExperience;
 
 
     private String id;
@@ -79,7 +78,7 @@ public class SpeciesStats {
 
     private Integer level = 0;
 
-    private Integer experience = 0;
+    private Long experience = 0L;
 
     /**
      * Maximum life points
@@ -102,7 +101,7 @@ public class SpeciesStats {
                         int agility,
                         int luck,
                         int level,
-                        int experience,
+                        long experience,
                         int life,
                         int steps) {
         this.id = id;
@@ -123,8 +122,8 @@ public class SpeciesStats {
         this.pctIntelligence = percent(0, 10, intelligence);
         this.pctAgility = percent(0, 10, agility);
         this.pctLuck = percent(0, 10, luck);
-        this.minExperience = level * 1000;
-        this.maxExperience = (level + 1) * 1000;
+        this.minExperience = (long)(level * 1000);
+        this.maxExperience = (long)((level + 1) * 1000);
         this.pctExperience = percent(minExperience, maxExperience, getExperience());
         this.life = life;
         this.steps = steps;

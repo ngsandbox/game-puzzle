@@ -62,6 +62,6 @@ public class GameRestController {
                                       HttpSession session) {
         log.debug("Go to the next position {}", position);
         FightSession fightSession = getFightSession(session);
-        return arenaService.makeMove(position, fightSession);
+        return arenaService.makeMove(position.convert(), fightSession);
     }
 }
