@@ -139,15 +139,6 @@ public class SpeciesStats {
     public Human createHuman(String login) {
         log.debug("Convert model {} {}", login, this);
         Characteristic characteristic = convert();
-        if (victims == null) {
-            vCharacteristic = characteristic;
-            victims = Arrays.asList(
-                    new Scorpio(null, UUID.randomUUID().toString(), characteristic),
-                    new Gecko(null, UUID.randomUUID().toString(), characteristic)
-            );
-            return new Human(id, login, characteristic, victims);
-        }
-
         return new Human(id, login, characteristic);
     }
 
