@@ -15,3 +15,5 @@ Implementation details:
 * SpeciesService, CharacteristicService, ArenaService - domain level services for species generation, characteristics and other calculation  
 * GameDAOImpl - database layer
 * GameProperties - application level setting 
+
+[Additional Games](ttps://ngsandbox.github.io/2048)
