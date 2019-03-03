@@ -7,8 +7,6 @@
         <h3 th:text="${species.getLogin()}"></h3>
     </div>
 
-    <div th:replace="fragments/arena">...</div>
-
     <div class="row">
         <div class="col-10">
             <table class="table table-hover">
@@ -151,6 +149,12 @@
                      th:text="${species.getStats().getLuck()}">
                 </div>
             </div>
+            <div class="container">
+                <form th:action="@{/fight}" method="post">
+                    <button type="submit" class="btn btn-primary mt-3 w-100 float-right">Fight</button>
+                </form>
+            </div>
+
         </div>
     </div>
 </div>

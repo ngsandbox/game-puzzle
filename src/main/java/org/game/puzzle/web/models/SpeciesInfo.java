@@ -3,10 +3,15 @@ package org.game.puzzle.web.models;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import org.game.puzzle.core.entities.Range;
+import org.game.puzzle.core.entities.species.Species;
 import org.game.puzzle.core.entities.species.SpeciesType;
+import org.game.puzzle.db.factories.SpeciesFactory;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toList;
 
 @Slf4j
 @Getter
@@ -39,4 +44,12 @@ public class SpeciesInfo {
         this.victims = victims;
     }
 
+    /**
+     * convert from dto to domain object
+     */
+    public Species convert() {
+        return SpeciesFactory.convert(id, login, type
+                , stats.convert(),
+                victims.stream().map(SpeciesInfo::convert).collect(toList()));
+    }
 }

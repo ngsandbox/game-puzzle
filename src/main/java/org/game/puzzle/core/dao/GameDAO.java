@@ -1,10 +1,7 @@
 package org.game.puzzle.core.dao;
 
-import lombok.NonNull;
-import org.game.puzzle.core.entities.Characteristic;
 import org.game.puzzle.core.entities.species.Species;
 
-import javax.validation.constraints.NotNull;
 import java.util.Optional;
 
 public interface GameDAO {
@@ -26,9 +23,8 @@ public interface GameDAO {
 
     /**
      * Update species characteristics (level, experience, etc)
-     * @return characteristic id
      */
-    String updateCharacteristic(@NonNull Characteristic characteristic);
+    void updateExperience(String characteristicId, long experience);
 
     /**
      * Remove species by login

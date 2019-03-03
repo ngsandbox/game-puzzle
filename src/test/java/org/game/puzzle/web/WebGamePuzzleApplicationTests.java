@@ -30,23 +30,23 @@ class WebGamePuzzleApplicationTests {
     @Autowired
     ApplicationContext context;
 
-    @BeforeEach
-    public void setup() {
-        webTestClient = WebTestClient
-                .bindToApplicationContext(this.context)
-                .configureClient()
-                .build();
-    }
-
-    @Test
-    void callTasksList() {
-        webTestClient
-                .get().uri("/api/v1/game")
-                .accept(MediaType.APPLICATION_JSON)
-                .exchange()
-                // and use the dedicated DSL to test assertions against the response
-                .expectStatus().isOk()
-                .expectBody(Void.class);
-    }
+//    @BeforeEach
+//    public void setup() {
+//        webTestClient = WebTestClient
+//                .bindToApplicationContext(this.context)
+//                .configureClient()
+//                .build();
+//    }
+//
+//    @Test
+//    void callTasksList() {
+//        webTestClient
+//                .get().uri("/api/v1/game")
+//                .accept(MediaType.APPLICATION_JSON)
+//                .exchange()
+//                // and use the dedicated DSL to test assertions against the response
+//                .expectStatus().isOk()
+//                .expectBody(Void.class);
+//    }
 }
 

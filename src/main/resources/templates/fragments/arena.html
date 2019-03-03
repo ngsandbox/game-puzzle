@@ -14,8 +14,12 @@
         <div class="col-5">
             <span class="text-primary text-left text-nowrap user" th:text="${fight.getLogin()}"></span>
             <div class="progress">
-                <div class="progress-bar user-life" role="progressbar" style="width: 100%;"
-                     aria-valuenow=100 aria-valuemin=0 aria-valuemax=100>100
+                <div class="progress-bar user-life" role="progressbar"
+                     th:attr="
+                     aria-valuenow=${fight.getUserInfo().getStats().getLife()},
+                     aria-valuemax=${fight.getUserInfo().getStats().getLife()}"
+                     style="width: 100%;"
+                     aria-valuemin=0>
                 </div>
             </div>
         </div>
@@ -23,8 +27,11 @@
         <div class="col-5">
             <span class="text-left text-nowrap enemy">Enemy</span>
             <div class="progress">
-                <div class="progress-bar enemy-life" role="progressbar" style="width: 70%;"
-                     aria-valuenow=70 aria-valuemin=0 aria-valuemax=100>80
+                <div class="progress-bar enemy-life" role="progressbar" style="width: 100%;"
+                     th:attr="
+                     aria-valuenow=${fight.getEnemyInfo().getStats().getLife()},
+                     aria-valuemax=${fight.getEnemyInfo().getStats().getLife()}"
+                     aria-valuemin=0>
                 </div>
             </div>
         </div>
@@ -40,7 +47,7 @@
                     <td class="bg-warning text-dark escape-area m-0 p-0">&nbsp;</td>
                 </tr>
                 <tr th:each="row, rowIterStat : ${fight.getArena().getGrid()}">
-                    <td class="bg-warning text-dark escape-area m-0 p-0" title="Run away from the arena">&nbsp;</td>
+                    <td class="bg-warning text-dark escape-area m-0 p-0" >&nbsp;</td>
                     <!--/*@thymesVar id="coord" type="org.game.puzzle.core.entities.grid.Coordinate"*/-->
                     <td th:each="coord, colIterStat : ${row}"
                         th:attr="
@@ -64,14 +71,14 @@
                         </div>
                     </td>
 
-                    <td class="bg-warning text-dark escape-area m-0 p-0" title="Run away from the arena">&nbsp;</td>
+                    <td class="bg-warning text-dark escape-area m-0 p-0" >&nbsp;</td>
                 </tr>
                 <tr>
-                    <td class="bg-warning text-dark escape-area m-0 p-0" title="Run away from the arena">&nbsp;</td>
+                    <td class="bg-warning text-dark escape-area m-0 p-0" >&nbsp;</td>
                     <td th:each="row, colIterStat : ${fight.getArena().getGrid()}"
-                        class="bg-warning text-dark escape-area m-0 p-0" title="Run away from the arena">&nbsp;
+                        class="bg-warning text-dark escape-area m-0 p-0" >&nbsp;
                     </td>
-                    <td class="bg-warning text-dark escape-area m-0 p-0" title="Run away from the arena">&nbsp;</td>
+                    <td class="bg-warning text-dark escape-area m-0 p-0" >&nbsp;</td>
                 </tr>
             </table>
         </div>

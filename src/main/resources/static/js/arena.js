@@ -1,8 +1,5 @@
 "use strict";
 $(function () {
-    $(".escape-area")
-        .attr("title", "Run away from the arena")
-        .click(onClickEscapeArea);
     $(".fight-area")
         .mouseenter(function () {
             $(this).removeClass("bg-light").addClass("bg-info")
@@ -13,9 +10,20 @@ $(function () {
         .click(onClickFightArea);
 });
 
+let atacker = null;
+
 function onClickFightArea() {
+    if (atacker) {
+        console.log("The move does not complete yet");
+        return;
+    }
+
     let row = $(this).data("arena-row");
     let col = $(this).data("arena-col");
+    atacker = {
+        "row": row,
+        "col": col
+    };
     $.ajax({
         contentType: 'application/json',
         data: JSON.stringify({
@@ -24,52 +32,60 @@ function onClickFightArea() {
         }),
         success: function (data) {
             console.log("New route received ", data);
+            atacker = null;
+            changePosition(data);
         },
         error: renderError,
+        dataType: "json",
         processData: false,
         type: 'POST',
         url: '/api/v1/goto'
     });
 }
 
-function onClickEscapeArea() {
+function changePosition(data) {
+    if (data) {
+        if (data.next && data.route) {
+            let img = $((!!data.userHit) ? ".fight-user" : ".fight-enemy").parent();
+            let life = $((!!data.userHit) ? ".enemy-life" : ".user-life");
+            let timeout = 200;
+            data.route.forEach(function (r) {
+                setTimeout(function () {
+                    $("td[data-arena-row='" + r.row + "'][data-arena-col='" + r.col + "']").append(img)
+                }, timeout);
+                timeout += 200;
+            });
 
-}
+            if (data.damage) {
+                let damage = parseInt(data.damage);
+                let maxLife = parseInt(life.attr("aria-valuemax"));
+                let minLife = parseInt(life.attr("aria-valuemin"));
+                let prevLife = parseInt(life.attr("aria-valuenow"));
+                let pct = ((maxLife - minLife) / 100);
+                let newLife = prevLife - damage;
+                life.attr("aria-valuenow", newLife);
+                let nowPct = parseInt(newLife / pct);
+                life.css({"width": nowPct + "%"});
+            }
 
-function onClickCreateSpecies() {
-    if (!document.getElementById("createSpeciesForm").checkValidity()) {
-        return;
+            if(data.userHit){
+                $(".user").removeClass("text-primary");
+                $(".enemy").addClass("text-primary");
+            } else{
+                $(".enemy").removeClass("text-primary");
+                $(".user").addClass("text-primary");
+            }
+
+            if(data.finish){
+                window.location.href = '/game';
+            }
+        }
     }
-
-    $("#createSpeciesErrors").removeClass('d-block').addClass('d-none');
-    let gender = $("input:radio[name='gender']:checked").val();
-
-    $.ajax({
-        contentType: 'application/json',
-        data: JSON.stringify({
-            "gender": gender,
-            "strength": $("#strength").val(),
-            "perception": $("#perception").val(),
-            "endurance": $("#endurance").val(),
-            "charisma": $("#charisma").val(),
-            "intelligence": $("#intelligence").val(),
-            "agility": $("#agility").val(),
-            "luck": $("#luck").val()
-        }),
-        success: function (data) {
-            console.log("species saved", data);
-            disconnect();
-            location.reload();
-        },
-        error: renderError,
-        processData: false,
-        type: 'POST',
-        url: '/api/v1/goto'
-    });
 }
 
 function renderError(e) {
     console.error("Error to call server ", e);
+    atacker = null;
     let errorMessage = e.responseText;
     if (errorMessage) {
         try {

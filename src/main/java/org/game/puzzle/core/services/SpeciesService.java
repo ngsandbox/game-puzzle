@@ -103,9 +103,9 @@ public class SpeciesService {
      *
      * @return characteristic id
      */
-    public String updateCharacteristic(@NonNull Characteristic characteristic) {
-        log.debug("Save characteristic {}", characteristic);
-        return gameDAO.updateCharacteristic(characteristic);
+    public void updateExperience(@NonNull String characteristicId, long experience) {
+        log.debug("Save for characteristic {} experience {}", characteristicId, experience);
+        gameDAO.updateExperience(characteristicId, experience);
     }
 
     /**

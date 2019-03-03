@@ -153,8 +153,8 @@ class DataBaseGameApplicationTests {
         Assertions.assertEquals(0, characteristic.getExperience(), "Species experience is not right");
         Assertions.assertEquals(0, characteristic.getLevel(), "Species level is not right");
 
-        characteristic = characteristic.toBuilder().experience(198776).level(6).build();
-        speciesService.updateCharacteristic(characteristic);
+        //characteristic = characteristic.toBuilder().experience(198776).level(6).build();
+        speciesService.updateExperience(characteristic.getId(), 198776);
 
 
         species = speciesService.getSpeciesByLogin(human.getLogin());
@@ -162,7 +162,6 @@ class DataBaseGameApplicationTests {
         characteristic = species.getCharacteristic();
         Assertions.assertNotNull(characteristic, "Species characteristics not specified");
         Assertions.assertEquals(198776, characteristic.getExperience(), "Species experience is not right");
-        Assertions.assertEquals(6, characteristic.getLevel(), "Species level is not right");
 
 
         speciesService.removeSpeciesByLogin("winner2");

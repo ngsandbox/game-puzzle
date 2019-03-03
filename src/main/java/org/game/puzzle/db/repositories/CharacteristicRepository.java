@@ -9,4 +9,6 @@ import org.springframework.stereotype.Repository;
 public interface CharacteristicRepository extends CrudRepository<CharacteristicEntity, String>,
         JpaSpecificationExecutor<CharacteristicEntity> {
 
+
+
 }

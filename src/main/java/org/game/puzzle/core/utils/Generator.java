@@ -17,6 +17,10 @@ public class Generator {
 
     public double nextDouble(double origin, double bound) {
         log.trace("Get random from {} to {}", origin, bound);
-        return random.nextDouble(origin, bound);
+        if (bound > origin) {
+            return random.nextDouble(origin, bound);
+        }
+
+        return bound;
     }
 }

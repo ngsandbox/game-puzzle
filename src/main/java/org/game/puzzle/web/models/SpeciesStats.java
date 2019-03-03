@@ -77,19 +77,19 @@ public class SpeciesStats {
     @NotNull(message = "Luck should be specified")
     private Integer luck;
 
-    private Integer level;
+    private Integer level = 0;
 
-    private Integer experience;
+    private Integer experience = 0;
 
     /**
      * Maximum life points
      */
-    private Integer life;
+    private Integer life = 0;
 
     /**
      * Maximum possible steps
      */
-    private Integer steps;
+    private Integer steps = 0;
 
     @Builder
     public SpeciesStats(String id,
@@ -136,17 +136,9 @@ public class SpeciesStats {
     /**
      * Create new Human instance from user's login with profided characteristics
      */
-    public Human convert(String login) {
+    public Human createHuman(String login) {
         log.debug("Convert model {} {}", login, this);
-        Characteristic characteristic = Characteristic.builder()
-                .strength(strength)
-                .perception(perception)
-                .endurance(endurance)
-                .charisma(charisma)
-                .intelligence(intelligence)
-                .agility(agility)
-                .luck(luck)
-                .build();
+        Characteristic characteristic = convert();
         if (victims == null) {
             vCharacteristic = characteristic;
             victims = Arrays.asList(
@@ -157,5 +149,21 @@ public class SpeciesStats {
         }
 
         return new Human(id, login, characteristic);
+    }
+
+    public Characteristic convert() {
+        return Characteristic.builder()
+                .id(id)
+                .gender(gender)
+                .strength(strength)
+                .perception(perception)
+                .endurance(endurance)
+                .charisma(charisma)
+                .intelligence(intelligence)
+                .agility(agility)
+                .luck(luck)
+                .experience(experience)
+                .level(level)
+                .build();
     }
 }

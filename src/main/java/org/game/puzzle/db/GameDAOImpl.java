@@ -3,11 +3,8 @@ package org.game.puzzle.db;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.game.puzzle.core.dao.GameDAO;
-import org.game.puzzle.core.entities.Characteristic;
 import org.game.puzzle.core.entities.species.Species;
-import org.game.puzzle.db.entities.CharacteristicEntity;
 import org.game.puzzle.db.entities.SpeciesEntity;
-import org.game.puzzle.db.factories.CharacteristicFactory;
 import org.game.puzzle.db.factories.SpeciesFactory;
 import org.game.puzzle.db.repositories.CharacteristicRepository;
 import org.game.puzzle.db.repositories.SpeciesRepository;
@@ -63,11 +60,14 @@ public class GameDAOImpl implements GameDAO {
     }
 
     @Override
-    public String updateCharacteristic(@NonNull Characteristic characteristic) {
-        log.debug("Update species characteristic {}", characteristic);
-        CharacteristicEntity entity = CharacteristicFactory.from(characteristic);
-        CharacteristicEntity save = characteristicRepository.save(entity);
-        return save.getCharacteristicId();
+    public void updateExperience(@NotNull String characteristicId, long experience) {
+        log.debug("Update {} {}", characteristicId, experience);
+        characteristicRepository.findById(characteristicId)
+                .map(c -> {
+                    c.setExperience(experience);
+                    characteristicRepository.save(c);
+                    return c;
+                }).orElseThrow(() -> new DbException("Characteristic not found " + characteristicId));
     }
 
     @Override

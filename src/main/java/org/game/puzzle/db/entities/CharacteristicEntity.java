@@ -13,7 +13,6 @@ import javax.persistence.*;
 @Slf4j
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode(of = "characteristicId")
 @Entity
