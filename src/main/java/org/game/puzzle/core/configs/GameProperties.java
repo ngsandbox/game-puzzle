@@ -36,7 +36,7 @@ public class GameProperties {
     private double protectionCoeff = 0.1;
 
     /**
-     * Minimum luck level when species can: find additional items on the buttle field, crit chance or avoid an atacker's hit
+     * Minimum luck level when species can: find additional items on the buttle field, crit chance or avoid an attacker's hit
      */
     private int minLuck = 8;
 

@@ -10,17 +10,17 @@ $(function () {
         .click(onClickFightArea);
 });
 
-let atacker = null;
+let attacker = null;
 
 function onClickFightArea() {
-    if (atacker) {
+    if (attacker) {
         console.log("The move does not complete yet");
         return;
     }
 
     let row = $(this).data("arena-row");
     let col = $(this).data("arena-col");
-    atacker = {
+    attacker = {
         "row": row,
         "col": col
     };
@@ -32,7 +32,7 @@ function onClickFightArea() {
         }),
         success: function (data) {
             console.log("New route received ", data);
-            atacker = null;
+            attacker = null;
             changePosition(data);
         },
         error: renderError,
@@ -77,6 +77,7 @@ function changePosition(data) {
             }
 
             if(data.finish){
+                disconnect();
                 window.location.href = '/game';
             }
         }
@@ -85,7 +86,7 @@ function changePosition(data) {
 
 function renderError(e) {
     console.error("Error to call server ", e);
-    atacker = null;
+    attacker = null;
     let errorMessage = e.responseText;
     if (errorMessage) {
         try {

@@ -66,27 +66,27 @@ public class ArenaService {
         boolean userHit = fightSession.isUserHit();
         Coordinate fromAtacker = userHit ? fightSession.getUserPosition() : fightSession.getEnemyPosition();
         if (fromAtacker.equals(toCoordinate)) {
-            log.debug("Skip on select the same atacker's location");
+            log.debug("Skip on select the same attacker's location");
             return new MoveModel(userHit, 0, Collections.emptyList(), false, false);
         }
 
         Coordinate defenderPosition = userHit ? fightSession.getEnemyPosition() : fightSession.getUserPosition();
 
-        SpeciesInfo atacker = userHit ? fightSession.getUserInfo() : fightSession.getEnemyInfo();
+        SpeciesInfo attacker = userHit ? fightSession.getUserInfo() : fightSession.getEnemyInfo();
         SpeciesInfo defender = userHit ? fightSession.getEnemyInfo() : fightSession.getUserInfo();
 
-        Integer steps = atacker.getStats().getSteps();
+        Integer steps = attacker.getStats().getSteps();
         List<Coordinate> route = findRoute(fromAtacker, toCoordinate, steps,
                 new TreeSet<>(asList(fightSession.getEnemyPosition(), fightSession.getUserPosition())));
         int restSteps = steps - route.size();
         int damage = 0;
         boolean finish = false;
-        Species atackerSpecies = atacker.convert();
+        Species attackerSpecies = attacker.convert();
         Species defenderSpecies = defender.convert();
         if (toCoordinate.equals(defenderPosition) && restSteps > 0) {
             log.debug("Calculate additional damage for the rest steps {}", restSteps);
             for (int i = 0; i < restSteps; i++) {
-                damage += characteristicService.calcDamage(atackerSpecies, defenderSpecies);
+                damage += characteristicService.calcDamage(attackerSpecies, defenderSpecies);
             }
 
             Integer life = defender.getStats().getLife();
@@ -105,10 +105,10 @@ public class ArenaService {
 
 
         if (finish) {
-            long experience = characteristicService.calcExperience(atackerSpecies, Collections.singletonList(defenderSpecies));
+            long experience = characteristicService.calcExperience(attackerSpecies, Collections.singletonList(defenderSpecies));
             log.debug("Update winner experience {}", experience);
-            speciesService.updateExperience(atackerSpecies.getCharacteristic().getId(), experience);
-            speciesService.addVictim(atacker.getLogin(), defenderSpecies);
+            speciesService.updateExperience(attackerSpecies.getCharacteristic().getId(), experience);
+            speciesService.addVictim(attacker.getLogin(), defenderSpecies);
         }
 
         fightSession.setUserHit(!userHit);

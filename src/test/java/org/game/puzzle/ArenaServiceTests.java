@@ -50,8 +50,8 @@ public class ArenaServiceTests {
 
     @Test
     void testFight() {
-        Species atacker = speciesService.createSpecies(10);
-        FightSession session = arenaService.createFightSession(atacker);
+        Species attacker = speciesService.createSpecies(10);
+        FightSession session = arenaService.createFightSession(attacker);
         Assertions.assertTrue(session.isUserHit(), "User hit expected");
         MoveModel moveModel = arenaService.makeMove(session.getUserPosition(), session);
         Assertions.assertNotNull(moveModel, "Model is null");

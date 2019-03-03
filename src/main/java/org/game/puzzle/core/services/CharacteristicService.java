@@ -59,7 +59,7 @@ public class CharacteristicService {
                 .setScale(0, BigDecimal.ROUND_HALF_UP)
                 .doubleValue();
         log.debug("Result experience {}", experience);
-        subscriptionService.publish(MessageEvent.of("The result experience: " + experience));
+        subscriptionService.publish(MessageEvent.of(winner.getLogin(), "The result experience: " + experience));
         return (long) experience;
     }
 
@@ -106,7 +106,7 @@ public class CharacteristicService {
     public long calcDamage(@NonNull Species attacker, @NonNull Species defender) {
         log.debug("Calculate damage from attacker {} to defender {}", attacker, defender);
         if (getLuck(defender)) {
-            subscriptionService.publish(MessageEvent.of("Defender get luck and escape damage"));
+            subscriptionService.publish(MessageEvent.of(attacker.getLogin(), "Defender get luck and escape damage"));
             return 0;
         }
 
@@ -134,7 +134,7 @@ public class CharacteristicService {
 
         if (getLuck(attacker)) {
             log.debug("Got luck and double the damage {}", damage);
-            subscriptionService.publish(MessageEvent.of("Attacker get luck and double the damage"));
+            subscriptionService.publish(MessageEvent.of(attacker.getLogin(), "Attacker get luck and double the damage"));
             damage *= 2;
         }
 
@@ -153,7 +153,7 @@ public class CharacteristicService {
                 .setScale(0, BigDecimal.ROUND_HALF_UP)
                 .doubleValue();
         log.debug("Result damage {}", damage);
-        subscriptionService.publish(MessageEvent.of("The result damage: " + damage));
+        subscriptionService.publish(MessageEvent.of(attacker.getLogin(), "The result damage: " + damage));
         return (long) damage;
     }
 
@@ -168,6 +168,7 @@ public class CharacteristicService {
         steps = BigDecimal.valueOf(steps)
                 .setScale(0, BigDecimal.ROUND_HALF_DOWN)
                 .doubleValue();
+        subscriptionService.publish(MessageEvent.of(species.getLogin(), "The steps count: " + steps));
         log.debug("Result steps count {}", steps);
         return (int) steps;
     }

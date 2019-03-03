@@ -47,7 +47,7 @@
                     <td class="bg-warning text-dark escape-area m-0 p-0">&nbsp;</td>
                 </tr>
                 <tr th:each="row, rowIterStat : ${fight.getArena().getGrid()}">
-                    <td class="bg-warning text-dark escape-area m-0 p-0" >&nbsp;</td>
+                    <td class="bg-warning text-dark escape-area m-0 p-0">&nbsp;</td>
                     <!--/*@thymesVar id="coord" type="org.game.puzzle.core.entities.grid.Coordinate"*/-->
                     <td th:each="coord, colIterStat : ${row}"
                         th:attr="
@@ -71,18 +71,21 @@
                         </div>
                     </td>
 
-                    <td class="bg-warning text-dark escape-area m-0 p-0" >&nbsp;</td>
+                    <td class="bg-warning text-dark escape-area m-0 p-0">&nbsp;</td>
                 </tr>
                 <tr>
-                    <td class="bg-warning text-dark escape-area m-0 p-0" >&nbsp;</td>
+                    <td class="bg-warning text-dark escape-area m-0 p-0">&nbsp;</td>
                     <td th:each="row, colIterStat : ${fight.getArena().getGrid()}"
-                        class="bg-warning text-dark escape-area m-0 p-0" >&nbsp;
+                        class="bg-warning text-dark escape-area m-0 p-0">&nbsp;
                     </td>
-                    <td class="bg-warning text-dark escape-area m-0 p-0" >&nbsp;</td>
+                    <td class="bg-warning text-dark escape-area m-0 p-0">&nbsp;</td>
                 </tr>
             </table>
         </div>
     </div>
+    <div class="row" id="messagesContainer">
+    </div>
     <script type="application/javascript" src="/js/arena.js"></script>
+    <script type="application/javascript" src="/js/messages.js"></script>
 </div>
 </html>

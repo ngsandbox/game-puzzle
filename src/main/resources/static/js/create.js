@@ -47,7 +47,6 @@ function onClickCreateSpecies() {
         }),
         success: function (data) {
             console.log("species saved", data);
-            disconnect();
             location.reload();
         },
         error: function (e) {

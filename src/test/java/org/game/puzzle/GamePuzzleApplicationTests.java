@@ -70,27 +70,27 @@ public class GamePuzzleApplicationTests {
         subscriptionService.subscribe(Topics.MESSAGE_TOPIC)
                 .doOnNext(events::add)
                 .subscribe();
-        Species atacker = new Human("id1", "atacker", getCharacteristic(0).toBuilder().level(5).build());
+        Species attacker = new Human("id1", "attacker", getCharacteristic(0).toBuilder().level(5).build());
         Human defender = new Human("id1", "defender", getCharacteristic(0).toBuilder().level(6).build());
-        long damage = characteristicService.calcDamage(atacker, defender);
+        long damage = characteristicService.calcDamage(attacker, defender);
         Assertions.assertEquals(7, damage, "The damage is not right for victims");
 
-        atacker = new Human("id1", "atacker", getCharacteristic(0).toBuilder().level(15).build());
-        damage = characteristicService.calcDamage(atacker, defender);
+        attacker = new Human("id1", "attacker", getCharacteristic(0).toBuilder().level(15).build());
+        damage = characteristicService.calcDamage(attacker, defender);
         Assertions.assertEquals(11, damage, "The damage is not right for victims");
 
         defender = new Human("id1", "defender", getCharacteristic(0).toBuilder().level(30).build());
-        atacker = new Human("id1", "atacker", getCharacteristic(0).toBuilder().level(15).build());
-        damage = characteristicService.calcDamage(atacker, defender);
+        attacker = new Human("id1", "attacker", getCharacteristic(0).toBuilder().level(15).build());
+        damage = characteristicService.calcDamage(attacker, defender);
         Assertions.assertEquals(11, damage, "The damage is not right for victims");
 
         defender = new Human("id1", "defender", getCharacteristic(0).toBuilder().level(30).endurance(9).build());
-        atacker = new Human("id1", "atacker", getCharacteristic(0).toBuilder().level(15).strength(10).build());
-        damage = characteristicService.calcDamage(atacker, defender);
+        attacker = new Human("id1", "attacker", getCharacteristic(0).toBuilder().level(15).strength(10).build());
+        damage = characteristicService.calcDamage(attacker, defender);
         Assertions.assertEquals(13, damage, "The damage is not right for victims");
 
         defender = new Human("id1", "defender", getCharacteristic(0).toBuilder().level(99).build());
-        damage = characteristicService.calcDamage(atacker, defender);
+        damage = characteristicService.calcDamage(attacker, defender);
 
         Assertions.assertEquals(13, damage, "The damage is not right for victims");
         Assertions.assertEquals(5, events.size(), "Wrong events count after damage calculations " + events);
@@ -146,7 +146,7 @@ public class GamePuzzleApplicationTests {
 
         counter = 0;
         while (characteristicService.calcDamage(maxLuckSpecies, minLuckSpecies) != 98 && ++counter < 10000) ;
-        Assertions.assertTrue(counter < 10_000, "There is no luck for atacker");
+        Assertions.assertTrue(counter < 10_000, "There is no luck for attacker");
 
         properties.setMinLuck(minLuck);
     }
