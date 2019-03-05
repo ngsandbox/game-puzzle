@@ -16,4 +16,4 @@ Implementation details:
 * GameDAOImpl - database layer
 * GameProperties - application level setting 
 
-[Additional Games](ttps://ngsandbox.github.io/2048)
+[Additional Games](ttps://ngsandbox.github.io/2048) https://ngsandbox.github.io/2048 
